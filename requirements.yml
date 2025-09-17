@@ -1,0 +1,8 @@
+---
+collections:
+  - name: ansible.posix
+  - name: community.general
+  - name: community.crypto
+  - name: community.vmware
+  - name: cisco.ios
+  - name: paloaltonetworks.panos

@@ -1,0 +1,47 @@
+---
+- name: OpenSCAP baseline scan
+  hosts: os_linux
+  gather_facts: yes
+  become: yes
+  vars:
+  linux_major: >-
+    {{ (ansible_facts.distribution == 'RedHat') | ternary(ansible_facts.distribution_major_version,
+        (ansible_facts.distribution == 'Ubuntu') | ternary(ansible_facts.distribution_version, '')) }}
+  linux_flavor: >-
+    {{ (ansible_facts.distribution | lower) in ['redhat','rocky','almalinux'] and 'rhel' or
+       (ansible_facts.distribution | lower) == 'ubuntu' and 'ubuntu' or 'rhel' }}
+  supported_map: "{{ baseline_library.os_linux[linux_flavor] | default({}) }}"
+  chosen_key: >-
+    {{ (supported_map.keys() | map('string') | list | sort(reverse=true)) | select('version_compare', linux_major, '<=') | list | first
+       if version_selection_strategy == 'lower_first'
+       else (supported_map.keys() | map('string') | list | sort(reverse=true) | first) }}
+  ds_path:    "{{ supported_map[chosen_key].ds | default(omit) }}"
+  profile_id: "{{ supported_map[chosen_key].profile | default(omit) }}"
+  ts: "{{ ansible_date_time.iso8601_basic }}"
+  host_dir: "{{ artifact_root }}/{{ inventory_hostname }}"
+
+  tasks:
+    - name: Run OpenSCAP XCCDF eval (baseline)
+      command: >-
+        oscap xccdf eval
+        --profile { profile_id }
+        --fetch-remote-resources
+        --results-arf /tmp/oscap_{ ts }.arf
+        --report      /tmp/oscap_{ ts }.html
+        { '--tailoring-file ' + scap_tailoring_file if scap_tailoring_file else '' }
+        { ds_path }
+      register: scan
+      changed_when: false
+
+    - name: Fetch ARF & HTML
+      fetch:
+        src: "/tmp/oscap_{ ts }.{ item }"
+        dest: "{ host_dir }/{ inventory_hostname }_baseline_{ ts }.{ item }"
+        flat: yes
+      loop: [ "arf", "html" ]
+
+    - name: Clean temp artifacts
+      file:
+        path: "/tmp/oscap_{ ts }.{ item }"
+        state: absent
+      loop: [ "arf", "html" ]

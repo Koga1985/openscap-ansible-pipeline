@@ -1,0 +1,46 @@
+---
+- name: ESXi hardening & verification (VMware SCG)
+  hosts: hypervisor_esxi
+  gather_facts: no
+  vars:
+    vsphere_validate_only: "{{ vsphere_validate_only | default(true) }}"
+  tasks:
+    - name: Collect ESXi facts (optional if vCenter creds provided)
+      community.vmware.vmware_host_facts:
+        hostname: "{{ vcenter_hostname | default(omit) }}"
+        username: "{{ vcenter_username | default(omit) }}"
+        password: "{{ vcenter_password | default(omit) }}"
+        esxi_hostname: "{{ inventory_hostname }}"
+        validate_certs: false
+      register: esxi_facts
+      ignore_errors: yes
+
+    - name: Determine ESXi major and template
+      set_fact:
+        esxi_major: "{{ (esxi_facts.hosts | default([])) | length > 0 and (esxi_facts.hosts | first).product.version.split('.')[0] or (vmware_scg_version | default('8.x') | regex_replace('\\.x','')) }}"
+        esxi_map: "{{ baseline_library.hypervisor_esxi | default({}) }}"
+    - set_fact:
+        esxi_key: "{{ (esxi_map.keys() | list | sort(reverse=true)) | select('version_compare', esxi_major, '<=') | list | first if version_selection_strategy == 'lower_first' else (esxi_map.keys() | list | sort(reverse=true) | first) }}"
+        esxi_template: "{{ esxi_map[esxi_key].template }}"
+
+    - name: Ensure artifact directory
+      delegate_to: localhost
+      file:
+        path: "{{ artifact_root }}/{{ inventory_hostname }}"
+        state: directory
+        mode: "0755"
+
+    - name: Render ESXi SCG remediation plan (auto-selected)
+      template:
+        src: "{{ esxi_template }}"
+        dest: "{{ artifact_root }}/{{ inventory_hostname }}/esxi_remediation.yml"
+      delegate_to: localhost
+
+    - name: Preview ESXi changes
+      debug:
+        msg: "Preview changes using vmware_esxi_hardening role here (stub)."
+
+    - name: Apply ESXi changes (if approved)
+      debug:
+        msg: "Apply changes here (stub)."
+      when: not vsphere_validate_only

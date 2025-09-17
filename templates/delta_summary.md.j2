@@ -1,0 +1,11 @@
+# Compliance Delta Summary — {{ inventory_hostname }}
+
+**Profile:** {{ profile_id | default('n/a') }}  
+**Datastream:** {{ ds_path | default('n/a') }}  
+
+Artifacts are under `{{ host_dir | default('artifacts/<host>') }}`.
+
+- Baseline HTML report and ARF: see artifacts folder
+- Post-remediation HTML report and ARF: see artifacts folder
+
+> Publish artifacts to AAP or a read‑only web share for auditors.

@@ -1,0 +1,31 @@
+---
+- name: Dell PowerFlex posture tasks (placeholder)
+  hosts: storage_powerflex
+  gather_facts: no
+  tasks:
+    - name: Determine PowerFlex version (set powerflex_version via API/CLI step)
+      debug:
+        msg: "Query version via vendor API/CLI and set powerflex_version fact"
+
+    - name: Select template from baseline library
+      set_fact:
+        pflex_map: "{{ baseline_library.storage_powerflex | default({}) }}"
+        pflex_major: "{{ powerflex_version | default('4') }}"
+        pflex_key: "{{ (pflex_map.keys() | list | sort(reverse=true)) | select('version_compare', pflex_major, '<=') | list | first if version_selection_strategy == 'lower_first' else (pflex_map.keys() | list | sort(reverse=true) | first) }}"
+        pflex_template: "{{ pflex_map[pflex_key].template }}"
+
+    - name: Ensure artifact directory
+      delegate_to: localhost
+      file:
+        path: "{{ artifact_root }}/{{ inventory_hostname }}"
+        state: directory
+        mode: "0755"
+
+    - name: Render PowerFlex plan (auto-selected)
+      template:
+        src: "{{ pflex_template }}"
+        dest: "{{ artifact_root }}/{{ inventory_hostname }}/powerflex_plan.yml"
+      delegate_to: localhost
+
+    - debug:
+        msg: "Implement vendor API/CLI apply here (stub)."

@@ -1,0 +1,42 @@
+---
+- name: Preflight validation & environment prep
+  hosts: all
+  gather_facts: yes
+  become: yes
+  vars:
+  linux_major: >-
+    {{ (ansible_facts.distribution == 'RedHat') | ternary(ansible_facts.distribution_major_version,
+        (ansible_facts.distribution == 'Ubuntu') | ternary(ansible_facts.distribution_version, '')) }}
+  linux_flavor: >-
+    {{ (ansible_facts.distribution | lower) in ['redhat','rocky','almalinux'] and 'rhel' or
+       (ansible_facts.distribution | lower) == 'ubuntu' and 'ubuntu' or 'rhel' }}
+  supported_map: "{{ baseline_library.os_linux[linux_flavor] | default({}) }}"
+  chosen_key: >-
+    {{ (supported_map.keys() | map('string') | list | sort(reverse=true)) | select('version_compare', linux_major, '<=') | list | first
+       if version_selection_strategy == 'lower_first'
+       else (supported_map.keys() | map('string') | list | sort(reverse=true) | first) }}
+  ds_path:    "{{ supported_map[chosen_key].ds | default(omit) }}"
+  profile_id: "{{ supported_map[chosen_key].profile | default(omit) }}"
+  ts: "{{ ansible_date_time.iso8601_basic }}"
+  host_dir: "{{ artifact_root }}/{{ inventory_hostname }}"
+
+  tasks:
+    - name: Assert SCAP profile/datastream resolved (OS hosts only)
+      when: profile_id is defined and ds_path is defined
+      assert:
+        that:
+          - profile_id is defined
+          - ds_path is defined
+        fail_msg: "SCAP profile/datastream not resolved"
+
+    - name: Include common OpenSCAP deps
+      include_role:
+        name: common_oscap
+
+    - name: Create artifact directory on controller
+      delegate_to: localhost
+      run_once: false
+      file:
+        path: "{ host_dir }"
+        state: directory
+        mode: "0755"

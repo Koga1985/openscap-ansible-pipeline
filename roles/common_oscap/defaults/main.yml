@@ -1,0 +1,11 @@
+---
+common_oscap_packages_rhel:
+  - openscap-scanner
+  - scap-security-guide
+
+common_oscap_packages_ubuntu:
+  - libopenscap8
+  - ssg-base
+  - ssg-debderived
+  - ssg-debian
+  - ssg-applications

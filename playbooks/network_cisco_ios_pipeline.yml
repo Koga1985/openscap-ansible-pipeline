@@ -1,0 +1,39 @@
+---
+- name: Cisco IOS-XE compliance (CIS/DoD policy)
+  hosts: network_cisco_ios
+  connection: network_cli
+  gather_facts: no
+  tasks:
+    - name: Gather IOS facts
+      ios_facts:
+      register: iosfacts
+
+    - name: Determine IOS major and template
+      set_fact:
+        ios_major: "{{ (iosfacts.ansible_facts.ansible_net_version | default('17.9')).split('.')[0] }}"
+        ios_map: "{{ baseline_library.network_cisco_ios | default({}) }}"
+    - set_fact:
+        ios_key: "{{ (ios_map.keys() | list | sort(reverse=true)) | select('version_compare', ios_major, '<=') | list | first if version_selection_strategy == 'lower_first' else (ios_map.keys() | list | sort(reverse=true) | first) }}"
+        ios_template: "{{ ios_map[ios_key].template }}"
+
+    - name: Ensure artifact directory
+      delegate_to: localhost
+      file:
+        path: "{{ artifact_root }}/{{ inventory_hostname }}"
+        state: directory
+        mode: "0755"
+
+    - name: Render config remediation (auto-selected)
+      template:
+        src: "{{ ios_template }}"
+        dest: "{{ artifact_root }}/{{ inventory_hostname }}/ios_remediation.cfg"
+      delegate_to: localhost
+
+    - name: Check-mode push to show diffs
+      ios_config:
+        src: "{{ artifact_root }}/{{ inventory_hostname }}/ios_remediation.cfg"
+      check_mode: yes
+
+    - name: Apply remediation (enforced)
+      ios_config:
+        src: "{{ artifact_root }}/{{ inventory_hostname }}/ios_remediation.cfg"

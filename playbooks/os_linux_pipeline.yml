@@ -1,0 +1,6 @@
+---
+- import_playbook: 00_preflight.yml
+- import_playbook: 01_scan.yml
+- import_playbook: 02_generate_remediation.yml
+- import_playbook: 03_apply_remediation.yml
+- import_playbook: 04_verify.yml

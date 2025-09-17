@@ -1,0 +1,52 @@
+---
+artifact_root: "{{ playbook_dir | dirname }}/artifacts"
+remediation_check_mode_first: true
+require_manual_ack_before_apply: false
+
+# Automatic routing unless overridden in inventory host vars
+platform: auto  # auto|os_linux|os_windows|hypervisor_esxi|network_cisco_ios|network_paloalto|storage_powerflex
+
+# Version support policy: current + last 2 majors
+support_policy:
+  keep_major_depth: 3
+version_selection_strategy: lower_first   # lower_first | highest_available
+
+# Compliance metadata for audit
+compliance:
+  framework: NIST_800-53
+  overlay: DISA_STIG
+  owner: SecurityOps
+  ticket_system: ServiceNow
+
+# Baseline library maps (edit paths/templates to your environment)
+baseline_library:
+  os_linux:
+    rhel:
+      "9": { ds: /usr/share/xml/scap/ssg/content/ssg-rhel9-ds.xml,
+             profile: xccdf_org.ssgproject.content_profile_stig }
+      "8": { ds: /usr/share/xml/scap/ssg/content/ssg-rhel8-ds.xml,
+             profile: xccdf_org.ssgproject.content_profile_stig }
+    ubuntu:
+      "22.04": { ds: /usr/share/xml/scap/ssg/ssg-ubuntu2204-ds.xml,
+                 profile: xccdf_org.ssgproject.content_profile_cis }
+      "20.04": { ds: /usr/share/xml/scap/ssg/ssg-ubuntu2004-ds.xml,
+                 profile: xccdf_org.ssgproject.content_profile_cis }
+
+  hypervisor_esxi:
+    "8": { template: files/vendor_baselines/vmware/scg_8x.j2 }
+    "7": { template: files/vendor_baselines/vmware/scg_7x.j2 }
+    # Add "9" when ready
+
+  network_cisco_ios:
+    "17": { template: files/vendor_baselines/cisco/ios_xe_17_cis_level{{ cis_level }}.j2 }
+    "16": { template: files/vendor_baselines/cisco/ios_xe_16_cis_level{{ cis_level }}.j2 }
+    # Add "15" if you support it
+
+  network_paloalto:
+    "11": { template: files/vendor_baselines/paloalto/panos_11_stig.j2 }
+    "10": { template: files/vendor_baselines/paloalto/panos_10_stig.j2 }
+    # Add "9" if required
+
+  storage_powerflex:
+    "4": { template: files/vendor_baselines/powerflex/powerflex_4x_baseline.j2 }
+    "3": { template: files/vendor_baselines/powerflex/powerflex_3x_baseline.j2 }

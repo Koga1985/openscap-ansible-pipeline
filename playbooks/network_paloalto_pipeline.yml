@@ -1,0 +1,50 @@
+---
+- name: Palo Alto PAN-OS compliance
+  hosts: network_paloalto
+  connection: local
+  gather_facts: no
+  tasks:
+    - name: Get PAN-OS system info
+      paloaltonetworks.panos.panos_op:
+        ip_address: "{{ ansible_host }}"
+        username: "{{ panos_username }}"
+        password: "{{ panos_password }}"
+        cmd: "show system info"
+      register: panos_info
+
+    - set_fact:
+        panos_version: "{{ panos_info.stdout_xml.response.result.system['sw-version'] }}"
+        panos_map: "{{ baseline_library.network_paloalto | default({}) }}"
+        panos_major: "{{ panos_version | string | split('.') | first }}"
+
+    - set_fact:
+        panos_key: "{{ (panos_map.keys() | list | sort(reverse=true)) | select('version_compare', panos_major, '<=') | list | first if version_selection_strategy == 'lower_first' else (panos_map.keys() | list | sort(reverse=true) | first) }}"
+        panos_template: "{{ panos_map[panos_key].template }}"
+
+    - name: Ensure artifact directory
+      delegate_to: localhost
+      file:
+        path: "{{ artifact_root }}/{{ inventory_hostname }}"
+        state: directory
+        mode: "0755"
+
+    - name: Build candidate config (auto-selected)
+      template:
+        src: "{{ panos_template }}"
+        dest: "{{ artifact_root }}/{{ inventory_hostname }}/panos_candidate.xml"
+      delegate_to: localhost
+
+    - name: Load candidate (check-mode)
+      paloaltonetworks.panos.panos_loadcfg:
+        ip_address: "{{ ansible_host }}"
+        username: "{{ panos_username }}"
+        password: "{{ panos_password }}"
+        file: "{{ artifact_root }}/{{ inventory_hostname }}/panos_candidate.xml"
+        commit: false
+
+    - name: Commit if approved
+      paloaltonetworks.panos.panos_commit:
+        ip_address: "{{ ansible_host }}"
+        username: "{{ panos_username }}"
+        password: "{{ panos_password }}"
+      when: apply_commit | default(false)

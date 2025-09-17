@@ -1,0 +1,3 @@
+---
+vmware_scg_version: "8.x"
+vsphere_validate_only: true

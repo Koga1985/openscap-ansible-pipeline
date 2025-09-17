@@ -1,0 +1,48 @@
+---
+- name: Generate Ansible remediation from baseline results
+  hosts: os_linux
+  gather_facts: yes
+  become: yes
+  vars:
+    ts: "{{ ansible_date_time.iso8601_basic }}"
+    host_dir: "{{ artifact_root }}/{{ inventory_hostname }}"
+  tasks:
+    - name: Locate baseline ARF
+      delegate_to: localhost
+      find:
+        paths: "{{ host_dir }}"
+        patterns: "*baseline*.arf"
+      register: _arf
+
+    - name: Fail if baseline ARF not found
+      assert:
+        that: _arf.files|length > 0
+        fail_msg: "Baseline artifacts missing. Run 01_scan.yml first."
+
+    - name: Copy baseline ARF back to host tmp
+      copy:
+        src: "{{ _arf.files[0].path }}"
+        dest: "/tmp/baseline.arf"
+        mode: "0600"
+
+    - name: Generate Ansible remediation (failed rules only)
+      command: >-
+        oscap xccdf generate fix
+        --fix-type ansible
+        --result-id xccdf_org.open-scap_testresult
+        --output /tmp/remediation_{{ ts }}.yml
+        /tmp/baseline.arf
+
+    - name: Fetch generated remediation playbook
+      fetch:
+        src: "/tmp/remediation_{{ ts }}.yml"
+        dest: "{{ host_dir }}/remediation_{{ ts }}.yml"
+        flat: yes
+
+    - name: Clean temp
+      file:
+        path: "/tmp/{{ item }}"
+        state: absent
+      loop:
+        - baseline.arf
+        - "remediation_{{ ts }}.yml"

@@ -1,0 +1,6 @@
+---
+- name: Windows baseline (placeholder)
+  hosts: os_windows
+  gather_facts: yes
+  tasks:
+    - debug: msg="Implement OpenSCAP for Windows or MS Security Baseline via LGPO/PolicyD"

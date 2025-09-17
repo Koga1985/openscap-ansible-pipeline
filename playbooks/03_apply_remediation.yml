@@ -1,0 +1,44 @@
+---
+- name: Apply generated remediation (with safety controls)
+  hosts: os_linux
+  gather_facts: yes
+  become: yes
+  vars:
+    host_dir: "{{ artifact_root }}/{{ inventory_hostname }}"
+    remediation_file: "{{ lookup('ansible.builtin.fileglob', host_dir + '/remediation_*.yml') }}"
+  handlers:
+    - name: Reboot if required
+      reboot:
+        reboot_timeout: 1800
+  tasks:
+    - name: Ensure remediation file exists
+      delegate_to: localhost
+      stat:
+        path: "{{ remediation_file }}"
+      register: _rf
+
+    - assert:
+        that: _rf.stat.exists
+        fail_msg: "No remediation playbook found. Run 02_generate_remediation.yml first."
+
+    - name: Optional manual ACK gate
+      pause:
+        prompt: "About to apply remediation to {{ inventory_hostname }}. Type 'YES' to continue:"
+      when: require_manual_ack_before_apply | bool
+      register: _ack
+
+    - name: Abort if not acknowledged
+      fail:
+        msg: "Remediation aborted by operator"
+      when: require_manual_ack_before_apply | bool and _ack.user_input != 'YES'
+
+    - name: Dry-run remediation (change preview)
+      include_tasks: "{{ remediation_file }}"
+      check_mode: true
+      when: remediation_check_mode_first | bool
+
+    - name: Apply remediation (enforced)
+      include_tasks: "{{ remediation_file }}"
+
+    - name: Flush handlers
+      meta: flush_handlers

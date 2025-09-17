@@ -1,0 +1,19 @@
+---
+- name: Route hosts to appropriate pipelines
+  hosts: all
+  gather_facts: yes
+  any_errors_fatal: true
+  vars:
+    detected_platform: >-
+      {{ (
+           ansible_network_os is defined and ansible_network_os|regex_search('ios') and 'network_cisco_ios' or
+           ansible_network_os is defined and ansible_network_os|regex_search('panos') and 'network_paloalto' or
+           (ansible_facts.os_family | default('')) == 'VMkernel' and 'hypervisor_esxi' or
+           (ansible_facts.os_family | default('')) in ['RedHat','Debian'] and 'os_linux' or
+           (ansible_facts.os_family | default('')) in ['Windows'] and 'os_windows' or
+           'os_linux'
+         ) }}
+    effective_platform: "{{ platform != 'auto' and platform or detected_platform }}"
+  tasks:
+    - name: Include platform-specific pipeline
+      include_playbook: "{{ playbook_dir + '/' + effective_platform + '_pipeline.yml' }}"

@@ -1,0 +1,16 @@
+---
+- name: Detect OS family (hint + facts)
+  set_fact:
+    _os_hint: "{{ os_family_hint | default(ansible_facts.os_family | lower) }}"
+
+- name: Install OpenSCAP/SSG packages (RHEL-like)
+  package:
+    name: "{{ common_oscap_packages_rhel }}"
+    state: present
+  when: _os_hint is search("rhel|redhat|rocky|almalinux")
+
+- name: Install OpenSCAP/SSG packages (Ubuntu-like)
+  package:
+    name: "{{ common_oscap_packages_ubuntu }}"
+    state: present
+  when: _os_hint is search("ubuntu|debian")
