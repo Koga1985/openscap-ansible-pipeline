@@ -1,0 +1,1 @@
+# openscap-ansible-pipeline
