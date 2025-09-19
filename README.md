@@ -6,336 +6,155 @@
 ---
 
 ## Table of Contents
-- [What This Does](#what-this-does)
-- [Repo Layout](#repo-layout)
-- [Requirements](#requirements)
-- [Quick Start](#quick-start)
-- [How It Works](#how-it-works)
-  - [Inventory Routing](#inventory-routing)
-  - [Version Support Policy](#version-support-policy)
-  - [OpenSCAP → Ansible Flow (Linux)](#openscap--ansible-flow-linux)
-  - [Vendor Pipelines (ESXi / Cisco / PAN-OS / PowerFlex)](#vendor-pipelines-esxi--cisco--pan-os--powerflex)
-- [Artifacts & Reports](#artifacts--reports)
+
+- [Purpose](#purpose)
+- [Highlights](#highlights)
+- [Quick links](#quick-links)
+- [Prerequisites](#prerequisites)
+- [Quick start](#quick-start)
+- [How the Linux flow works (high level)](#how-the-linux-flow-works-high-level)
+- [Vendor pipelines (what to expect)](#vendor-pipelines-what-to-expect)
 - [Configuration](#configuration)
-  - [Global Settings](#global-settings)
-  - [OS Profiles & Datastreams](#os-profiles--datastreams)
-  - [Vendor Baselines](#vendor-baselines)
-  - [Tailoring / Exceptions](#tailoring--exceptions)
-- [Running in Ansible Automation Platform](#running-in-ansible-automation-platform)
-- [Security & Compliance Notes](#security--compliance-notes)
-- [CI / Quality Gates](#ci--quality-gates)
-- [Extending the Repo](#extending-the-repo)
+- [Artifacts and outputs](#artifacts-and-outputs)
+- [CI and quality gates](#ci-and-quality-gates)
+- [Extending this repo](#extending-this-repo)
 - [Troubleshooting](#troubleshooting)
-- [Roadmap](#roadmap)
+- [Contributing](#contributing)
 - [License](#license)
 
 ---
 
-## What This Does
-- **Scans** Linux hosts using **OpenSCAP** and the OS-appropriate SCAP Security Guide (SSG) profile (e.g., STIG, CIS).
-- **Generates** an **Ansible remediation playbook** from the ARF results (failed rules only).
-- **Applies** the remediation with safety controls (check-mode preview, optional manual ACK, optional reboot handler).
-- **Verifies** by re-scanning and publishing **before/after** reports and a delta summary.
-- **Routes** non-OS devices (ESXi, Cisco IOS-XE, PAN-OS, PowerFlex) to **platform-specific pipelines** that render and apply baselines/configs.
-- **Auto-selects** the **current + last 2** major versions of vendor baselines based on live device facts.
+## Purpose
 
----
+This repository provides an inventory-driven pipeline to scan systems with OpenSCAP, generate Ansible remediation from scan results, apply those fixes with safety gates, and re-scan to verify remediation. It also contains vendor-specific pipelines for ESXi, Cisco IOS‑XE, Palo Alto PAN‑OS, and PowerFlex storage that render and optionally apply platform baselines.
 
-## Repo Layout
-openscap-ansible-pipeline/
-├─ inventories/
-│ ├─ lab/hosts.ini
-│ └─ prod/hosts.ini
-├─ group_vars/
-│ ├─ all.yml # global settings, version policy, baseline library
-│ ├─ os_linux.yml # os-specific toggles
-│ ├─ os_windows.yml # placeholder
-│ ├─ hypervisor_esxi.yml
-│ ├─ network_cisco_ios.yml
-│ ├─ network_paloalto.yml
-│ └─ storage_powerflex.yml
-├─ roles/
-│ └─ common_oscap/
-│ ├─ defaults/main.yml
-│ └─ tasks/main.yml # installs OpenSCAP/SSG packages
-├─ playbooks/
-│ ├─ 00_preflight.yml
-│ ├─ 01_scan.yml
-│ ├─ 02_generate_remediation.yml
-│ ├─ 03_apply_remediation.yml
-│ ├─ 04_verify.yml
-│ ├─ os_linux_pipeline.yml
-│ ├─ os_windows_pipeline.yml # placeholder
-│ ├─ hypervisor_esxi_pipeline.yml
-│ ├─ network_cisco_ios_pipeline.yml
-│ ├─ network_paloalto_pipeline.yml
-│ ├─ storage_powerflex_pipeline.yml
-│ └─ site.yml # dispatcher: routes hosts to proper pipeline
-├─ templates/
-│ └─ delta_summary.md.j2 # before/after summary
-├─ files/
-│ └─ vendor_baselines/
-│ ├─ vmware/
-│ ├─ cisco/
-│ ├─ paloalto/
-│ └─ powerflex/
-├─ artifacts/ # generated at runtime (reports, ARF, configs)
-├─ .github/workflows/lint.yml # CI: ansible-lint, yamllint, syntax-check
-├─ .ansible-lint # linter config
-├─ .yamllint # linter config
-├─ .pre-commit-config.yaml # optional local hooks
-├─ requirements.yml # Galaxy collections
-└─ .gitignore
+## Highlights
 
+- Inventory routing: a single dispatcher (`playbooks/site.yml`) routes hosts to the correct pipeline based on gathered facts or explicit host vars.
+- Linux flow: OpenSCAP scan → generate Ansible remediation → optional preview/ACK → apply → re-scan and delta summary.
+- Vendor pipelines: templates in `files/vendor_baselines/` are version-aware (current + last 2 majors by default) and are auto-selected from device facts.
+- Artifacts: all reports, ARFs, remediation playbooks and rendered vendor configs are written under `artifacts/` for auditing.
 
----
+## Quick links
 
-## Requirements
-- **Ansible** (core) on the control machine.
-- Linux targets need **OpenSCAP + SSG** packages (role `common_oscap` installs common packages for RHEL/Ubuntu).
-- Collections (installed automatically via `requirements.yml`):
-  - `ansible.posix`, `community.general`, `community.crypto`
-  - `community.vmware` (ESXi facts/pipeline)
-  - `cisco.ios` (IOS-XE pipeline)
-  - `paloaltonetworks.panos` (PAN-OS pipeline)
-- Credentials handled via inventory, **Ansible Vault**, or **AAP credentials**.
+- Dispatcher: `playbooks/site.yml`
+- Linux pipeline: `playbooks/os_linux_pipeline.yml` (00_preflight → 01_scan → 02_generate_remediation → 03_apply_remediation → 04_verify)
+- Vendor pipelines: `playbooks/hypervisor_esxi_pipeline.yml`, `playbooks/network_cisco_ios_pipeline.yml`, `playbooks/network_paloalto_pipeline.yml`, `playbooks/storage_powerflex_pipeline.yml`
 
----
+## Prerequisites
 
-## Quick Start
+- Control machine: Ansible (core). Recommended: Ansible 2.14+ or Ansible Core released around the same era as the installed collections.
+- Collections: installed via `requirements.yml` (see below).
+- Linux targets: OpenSCAP and appropriate SSG datastreams installed (the `roles/common_oscap` role provides installation tasks for common distributions).
+- Credentials: supply via inventory, Ansible Vault, or Ansible Automation Platform (AAP) credentials.
+
+## Install required collections
+
+Run on your control node:
+
 ```bash
-# install required collections
 ansible-galaxy collection install -r requirements.yml
+```
 
-# run the dispatcher over the lab inventory
+## Repository layout (important files)
+
+- `inventories/` — sample lab/prod inventories
+- `group_vars/` — global and platform variable maps (`all.yml`, `os_linux.yml`, `storage_powerflex.yml`, etc.)
+- `playbooks/` — pipeline entrypoints and steps
+- `roles/common_oscap/` — installs OpenSCAP/SSG packages and helpers
+- `files/vendor_baselines/` — Jinja2 templates for vendor baselines and rendered configs
+- `templates/delta_summary.md.j2` — summary used by the verify step
+- `requirements.yml` — required Galaxy collections
+- `artifacts/` — generated at runtime (reports, ARFs, remediation output)
+
+## Quick start
+
+1. Install collections
+
+```bash
+ansible-galaxy collection install -r requirements.yml
+```
+
+2. Run the dispatcher against the lab inventory
+
+```bash
 ansible-playbook -i inventories/lab/hosts.ini playbooks/site.yml
+```
 
+## Tips
 
-Tip: Start with a single Linux test host in inventories/lab/hosts.ini. Add ESXi/network/storage after the OS path is validated.
+- Start with a single Linux host in `inventories/lab/hosts.ini` to validate the OpenSCAP → remediation flow before adding ESXi or network/storage devices.
+- Use `-e platform=os_linux` on the `ansible-playbook` command line to force a pipeline for testing.
 
-How It Works
-Inventory Routing
+## How the Linux flow works (high level)
 
-playbooks/site.yml detects the platform per host and includes the right pipeline:
+1. `00_preflight.yml` — resolve datastream/profile (from `group_vars/all.yml` baseline_library), create artifact directories, ensure packages are present.
 
-Linux → os_linux_pipeline.yml (OpenSCAP → remediation → verify)
+2. `01_scan.yml` — run `oscap xccdf eval` to produce ARF and HTML results.
 
-ESXi → hypervisor_esxi_pipeline.yml
+3. `02_generate_remediation.yml` — generate an Ansible remediation playbook from the ARF that contains only the failed rules.
 
-Cisco IOS-XE → network_cisco_ios_pipeline.yml
+4. `03_apply_remediation.yml` — provide a check-mode preview, optional manual acknowledgement, apply remediation tasks, and optionally trigger a reboot handler.
 
-PAN-OS → network_paloalto_pipeline.yml
+5. `04_verify.yml` — re-run the scan, collect post-remediation ARF/HTML, and write a delta summary (`templates/delta_summary.md.j2`).
 
-PowerFlex → storage_powerflex_pipeline.yml
+Vendor pipelines (what to expect)
+ 
+- ESXi: facts from vCenter (if configured) are used to choose a VMware SCG template; a rendered `esxi_remediation.yml` is produced under artifacts.
+- Cisco IOS‑XE: a rendered `ios_remediation.cfg` is produced and can be applied with `cisco.ios.ios_config` in check-mode before commit.
+- PAN‑OS: a candidate XML (`panos_candidate.xml`) is rendered and can be loaded (no commit) for review.
+- PowerFlex: a rendered plan (`powerflex_plan.yml`) is produced; the repo includes a stub pipeline to let you implement vendor API/CLI apply steps.
 
-You can force a host’s pipeline with a host var:
+## Configuration
 
-rhel9-node1 platform=os_linux
+Global settings are in `group_vars/all.yml`. Key variables (examples):
 
-Version Support Policy
+- `artifact_root` — base path for artifacts (defaults to `${playbook_dir}/../artifacts`).
+- `remediation_check_mode_first` — whether to run the apply step in check-mode first.
+- `require_manual_ack_before_apply` — gate that requires manual confirmation before any destructive apply.
+- `support_policy.keep_major_depth` — how many major versions to keep for vendor baseline selection (default: 3).
 
-We maintain templates for current + last 2 majors (configurable) and auto-select the correct template/datastream from group_vars/all.yml → baseline_library. If the exact major isn’t present, selection falls back to the nearest lower supported version (or the highest available).
+OS profiles & datastreams
+Map your OS families and versions to SSG datastreams and profile IDs in `group_vars/all.yml` under `baseline_library.os_linux`. Example keys are `rhel`, `ubuntu`, and the numeric major/minor strings.
 
-Set policy in group_vars/all.yml:
+Vendor baselines
+Place versioned Jinja templates in `files/vendor_baselines/<vendor>/`. The pipeline will select the best matching template using the configured support policy and the device facts.
 
-support_policy:
-  keep_major_depth: 3
-version_selection_strategy: lower_first   # or: highest_available
+## Artifacts and outputs
 
+After a run, check `artifacts/<inventory_hostname>/` for:
 
-Where you add versions:
-group_vars/all.yml → baseline_library.* and files/vendor_baselines/<vendor>/...
+- `<host>_baseline_<ts>.html` and `.arf` — pre-remediation scan
+- `remediation_<ts>.yml` — generated Ansible remediation for Linux
+- `<host>_post_<ts>.html` and `.arf` — post-remediation scan
+- `summary_<ts>.md` — human-readable delta summary produced from `templates/delta_summary.md.j2`
+- `ios_remediation.cfg`, `panos_candidate.xml`, `esxi_remediation.yml`, `powerflex_plan.yml` — vendor artifacts when relevant
 
-OpenSCAP → Ansible Flow (Linux)
+## CI and quality gates
 
-Preflight (00_preflight.yml): resolves profile & datastream for the OS, ensures OpenSCAP/SSG installed, creates artifact dirs.
+- A GitHub Actions workflow runs `ansible-lint`, `yamllint`, and `ansible-playbook --syntax-check` on changes (see `.github/workflows/lint.yml`).
+- Consider enabling branch protection rules that require these checks to pass before merging.
 
-Scan (01_scan.yml): runs oscap xccdf eval → collects ARF + HTML.
+## Extending this repo
 
-Generate Remediation (02_generate_remediation.yml): uses oscap xccdf generate fix --fix-type ansible against the ARF (failed rules only).
+- Add a new vendor: create `playbooks/<vendor>_pipeline.yml`, add versioned templates under `files/vendor_baselines/<vendor>/`, and update `group_vars/all.yml` `baseline_library` mappings.
+- Add Windows: implement OpenSCAP (or equivalent) Windows scan and remediation steps and wire through `playbooks/os_windows_pipeline.yml`.
 
-Apply (03_apply_remediation.yml): optional check-mode preview, optional manual ACK, apply tasks, optional reboot handler.
+## Troubleshooting
 
-Verify (04_verify.yml): re-scan, pull post-ARF/HTML, write delta markdown summary.
+- Permission/SSH errors: validate control-node keys and inventory credentials. Use Ansible Vault for secrets.
+- Missing packages on targets: ensure package repos are reachable or pre-stage packages.
+- Datastream/profile selection failures: verify `group_vars/all.yml` `baseline_library` entries match your OS names/versions.
 
-Vendor Pipelines (ESXi / Cisco / PAN-OS / PowerFlex)
+## Contributing
 
-ESXi: gather facts via vCenter (if provided), auto-select VMware SCG template → render plan under artifacts/<host>/esxi_remediation.yml. (Role stubs included for preview/apply; bring your preferred SCG implementation or roles.)
+- Open issues and PRs are welcome. When contributing changes to playbooks or roles:
 
-Cisco IOS-XE: gather facts, auto-select template → render ios_remediation.cfg → check-mode diff → apply with ios_config.
-
-PAN-OS: run show system info, auto-select template → render panos_candidate.xml → load (no commit) → optional commit.
-
-PowerFlex: stub to query version, auto-select template, render plan; plug in your vendor API/CLI apply tasks.
-
-Artifacts & Reports
-
-All output lands under:
-
-artifacts/<inventory_hostname>/
-  <host>_baseline_<ts>.html
-  <host>_baseline_<ts>.arf
-  remediation_<ts>.yml         (Linux, generated)
-  <host>_post_<ts>.html
-  <host>_post_<ts>.arf
-  summary_<ts>.md              (delta summary)
-  ios_remediation.cfg          (Cisco)
-  panos_candidate.xml          (PAN-OS)
-  esxi_remediation.yml         (ESXi)
-  powerflex_plan.yml           (PowerFlex)
-
-
-Publish the artifacts/ directory via AAP Artifacts, a read-only web share, or object storage (e.g., S3) for auditors.
-
-Configuration
-Global Settings
-
-group_vars/all.yml:
-
-artifact_root: "{{ playbook_dir | dirname }}/artifacts"
-remediation_check_mode_first: true
-require_manual_ack_before_apply: false
-platform: auto   # override per host if desired
-
-# compliance metadata for audit logs
-compliance:
-  framework: NIST_800-53
-  overlay: DISA_STIG
-  owner: SecurityOps
-  ticket_system: ServiceNow
-
-OS Profiles & Datastreams
-
-In group_vars/all.yml → baseline_library.os_linux map your OSes (RHEL/Ubuntu) to the correct SSG datastream and profile:
-
-baseline_library:
-  os_linux:
-    rhel:
-      "9":
-        ds: /usr/share/xml/scap/ssg/content/ssg-rhel9-ds.xml
-        profile: xccdf_org.ssgproject.content_profile_stig
-      "8":
-        ds: /usr/share/xml/scap/ssg/content/ssg-rhel8-ds.xml
-        profile: xccdf_org.ssgproject.content_profile_stig
-    ubuntu:
-      "22.04":
-        ds: /usr/share/xml/scap/ssg/ssg-ubuntu2204-ds.xml
-        profile: xccdf_org.ssgproject.content_profile_cis
-      "20.04":
-        ds: /usr/share/xml/scap/ssg/ssg-ubuntu2004-ds.xml
-        profile: xccdf_org.ssgproject.content_profile_cis
-
-Vendor Baselines
-
-Put your versioned templates here:
-
-files/vendor_baselines/
-  vmware/scg_8x.j2, scg_7x.j2, ...
-  cisco/ios_xe_17_cis_level{{ cis_level }}.j2, ios_xe_16_...
-  paloalto/panos_11_stig.j2, panos_10_stig.j2, ...
-  powerflex/powerflex_4x_baseline.j2, powerflex_3x_baseline.j2, ...
-
-
-Map them in baseline_library.hypervisor_esxi, baseline_library.network_cisco_ios, etc.
-
-Tailoring / Exceptions
-
-For Linux, you can pass a tailoring file to limit scope:
-
-# group_vars/os_linux.yml
-scap_tailoring_file: ""   # path on controller; leave empty to disable
-
-
-When set, it’s appended to oscap xccdf eval as --tailoring-file <file>.
-
-Running in Ansible Automation Platform
-
-Create a Workflow with these Job Templates:
-
-00_preflight.yml
-
-01_scan.yml
-
-02_generate_remediation.yml
-
-03_apply_remediation.yml (insert an Approval Node before this, if desired)
-
-04_verify.yml
-
-Use Surveys to capture:
-
-OS profile override, tailoring file path,
-
-Approval toggles,
-
-Maintenance window flags.
-
-Artifacts appear in each job run and can be retained/exported.
-
-Security & Compliance Notes
-
-Use Ansible Vault for secrets locally; in AAP use Credential Types.
-
-Consider running scans in FIPS-enabled environments where required.
-
-Generated remediation tasks are idempotent; still review high-impact changes and use check_mode gates.
-
-For DoD environments, pair with DISA STIG overlays/tailoring and maintain audit trails via artifacts + AAP job logs.
-
-CI / Quality Gates
-
-This repo includes:
-
-GitHub Actions: .github/workflows/lint.yml → ansible-lint, yamllint, and ansible-playbook --syntax-check on every push/PR.
-
-Optional pre-commit hooks: .pre-commit-config.yaml.
-
-Enable branch protections on main: require PR + passing checks.
-
-Extending the Repo
-
-Add Windows: replace placeholder with OpenSCAP for Windows (SSG) or Microsoft Security Baseline via LGPO/PolicyD tasks.
-
-Add vendors: create files/vendor_baselines/<vendor>/... and a <vendor>_pipeline.yml plus baseline map in group_vars/all.yml.
-
-ServiceNow Change Controls: add a role/handlers to open/resolve tickets around the apply step.
-
-Slack/Teams: post delta summaries and artifact links at the end of 04_verify.yml.
-
-Troubleshooting
-
-Q: Permission denied (publickey) when pushing to GitHub
-A: Use HTTPS with a Personal Access Token or configure SSH keys (ssh-keygen, add pubkey to GitHub).
-
-Q: src refspec main does not match any
-A: You haven’t committed yet. Run git add . && git commit -m "…"
-
-Q: Remote contains work; push rejected
-A: git pull --rebase --allow-unrelated-histories origin main, resolve conflicts, then push; or push to a new branch and open a PR.
-
-Q: OpenSCAP packages missing on Linux targets
-A: The common_oscap role installs common packages for RHEL/Ubuntu. Ensure network access to repos or pre-stage packages.
-
-Q: Datastream/profile not resolved
-A: Verify baseline_library.os_linux paths match your distro/version. Adjust for RHEL8/9 vs Rocky/Alma mapping.
-
-Q: Network device pipelines time out
-A: Confirm the right connection (e.g., network_cli), credentials, and reachability. For PAN-OS, confirm API access.
-
-Roadmap
-
-Full Windows baseline implementation.
-
-ESXi SCG enforcement role integration.
-
-Optional artifact upload on PRs (publish sample HTML reports).
-
-Nightly CI matrix for multiple Ansible/Python versions.
-
-AAP job templates export (Controller export YAML).
+  - Run `ansible-lint` and `yamllint` locally.
+  - Add tests or example inventories if you add a new pipeline.
 
 License
+This repository does not include a license file. Add a `LICENSE` (MIT, Apache-2.0, or your organization's preferred license) if you plan to make this public.
 
-Choose one and add a LICENSE file (recommended):
-
-MIT (permissive), Apache-2.0 (permissive with patent grant), or an internal license if private.
+Contact / maintainer
+Open an issue on the repository for questions, or file PRs with suggested improvements.
