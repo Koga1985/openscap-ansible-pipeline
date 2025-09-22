@@ -21,6 +21,7 @@
 - [Troubleshooting](#troubleshooting)
 - [Contributing](#contributing)
 - [License](#license)
+- [Examples & safety notes](#examples--safety-notes)
 
 ---
 
@@ -153,8 +154,46 @@ After a run, check `artifacts/<inventory_hostname>/` for:
   - Run `ansible-lint` and `yamllint` locally.
   - Add tests or example inventories if you add a new pipeline.
 
-License
-This repository does not include a license file. Add a `LICENSE` (MIT, Apache-2.0, or your organization's preferred license) if you plan to make this public.
+## Examples & safety notes
 
-Contact / maintainer
-Open an issue on the repository for questions, or file PRs with suggested improvements.
+Example minimal inventory entries (use `inventories/lab/hosts.ini` as a starting point):
+
+```ini
+[os_linux]
+rhel9-node1 ansible_host=10.0.1.10 platform=os_linux
+ubuntu-node2 ansible_host=10.0.1.11
+
+[hypervisor_esxi]
+esxi01.lab.local ansible_host=10.0.2.10
+
+[network_cisco_ios]
+core-sw1 ansible_host=10.0.3.10 ansible_network_os=ios
+
+[network_paloalto]
+pa-fw1 ansible_host=10.0.3.20 ansible_network_os=panos
+
+[storage_powerflex]
+pflex-mgr1 ansible_host=10.0.4.10
+```
+
+Safety checklist when running the pipeline
+
+- Always inspect generated remediation playbooks under `artifacts/<host>/remediation_<ts>.yml` before applying.
+- Use `--check` for the apply step initially (the pipeline can be configured to run check-mode first via `remediation_check_mode_first`).
+- Keep `require_manual_ack_before_apply: true` in `group_vars/all.yml` for production runs to force a human review.
+- Run against a single test host first and review `artifacts/<host>/` outputs (HTML + ARF) before mass runs.
+
+Sample delta summary excerpt (what auditors typically look for):
+
+```text
+# Compliance Delta Summary — rhel9-node1
+
+Profile: xccdf_org.ssgproject.content_profile_stig
+Datastream: /usr/share/xml/scap/ssg/content/ssg-rhel9-ds.xml
+
+- Failed rules before: 42
+- Failed rules after: 7
+- Remediation playbook: artifacts/rhel9-node1/remediation_20250922T120000.yml
+
+Publish artifacts to AAP or a read-only artifact store for audit retention.
+```
