@@ -1,5 +1,5 @@
 # OpenSCAP → Ansible Remediation Pipeline  
-**Inventory-routed • Version-aware • Enterprise-ready**
+## Inventory-routed • Version-aware • Enterprise-ready
 
 > **BLUF:** This repo lets you scan hosts with **OpenSCAP**, auto-generate **Ansible remediation** from the scan results, apply those fixes safely, and re-scan to prove remediation. It also routes by inventory to apply **platform-specific baselines** for ESXi, Cisco IOS-XE, PAN-OS, and PowerFlex—automatically selecting the **current + last 2** major versions of each vendor’s baseline templates.
 
