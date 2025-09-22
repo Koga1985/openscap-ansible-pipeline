@@ -1,2 +1,0 @@
-Command failed:  -m pip install ansible-dev-tools --no-input
-/bin/sh: 1: -m: not found

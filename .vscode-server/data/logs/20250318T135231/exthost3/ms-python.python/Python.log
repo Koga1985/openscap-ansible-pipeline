@@ -1,5 +1,0 @@
-2025-03-18 13:53:40.812 [info] Experiment 'pythonRecommendTensorboardExt' is active
-2025-03-18 13:53:40.812 [info] Experiment 'pythonTerminalEnvVarActivation' is active
-2025-03-18 13:53:40.812 [info] Experiment 'pythonTestAdapter' is active
-2025-03-18 13:53:40.812 [info] Python interpreter path: /bin/python3
-2025-03-18 13:53:42.075 [info] Starting Pylance language server.
