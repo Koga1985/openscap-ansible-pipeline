@@ -1,0 +1,25 @@
+2025-03-18 11:55:16.905 [info] Extension host with pid 4943 started
+2025-03-18 11:55:16.929 [info] ExtensionService#_doActivateExtension vscode.emmet, startup: false, activationEvent: 'onLanguage'
+2025-03-18 11:55:17.039 [info] ExtensionService#_doActivateExtension vscode.git-base, startup: true, activationEvent: '*', root cause: vscode.git
+2025-03-18 11:55:17.089 [info] ExtensionService#_doActivateExtension vscode.git, startup: true, activationEvent: '*'
+2025-03-18 11:55:17.089 [info] ExtensionService#_doActivateExtension vscode.github, startup: true, activationEvent: '*'
+2025-03-18 11:55:17.230 [info] Eager extensions activated
+2025-03-18 11:55:17.231 [info] ExtensionService#_doActivateExtension vscode.debug-auto-launch, startup: false, activationEvent: 'onStartupFinished'
+2025-03-18 11:55:17.231 [info] ExtensionService#_doActivateExtension vscode.merge-conflict, startup: false, activationEvent: 'onStartupFinished'
+2025-03-18 11:55:34.570 [info] ExtensionService#_doActivateExtension ms-python.python, startup: false, activationEvent: 'onView:ansible-home', root cause: redhat.ansible
+2025-03-18 11:55:34.573 [info] ExtensionService#_doActivateExtension redhat.vscode-yaml, startup: false, activationEvent: 'onView:ansible-home', root cause: redhat.ansible
+2025-03-18 11:55:35.008 [info] ExtensionService#_doActivateExtension redhat.ansible, startup: false, activationEvent: 'onView:ansible-home'
+2025-03-18 11:55:35.143 [warning] [redhat.vscode-yaml] Accessing a resource scoped configuration without providing a resource is not expected. To get the effective value for '[yaml]', provide the URI of a resource or 'null' for any resource.
+2025-03-18 11:55:35.165 [warning] [redhat.vscode-yaml] Accessing a resource scoped configuration without providing a resource is not expected. To get the effective value for '[yaml]', provide the URI of a resource or 'null' for any resource.
+2025-03-18 11:55:35.293 [info] ExtensionService#_doActivateExtension ms-python.vscode-pylance, startup: false, activationEvent: 'api', root cause: ms-python.python
+2025-03-18 12:16:13.509 [info] Extension host terminating: received terminate message from renderer
+2025-03-18 12:16:13.564 [error] Canceled: Canceled
+	at new dR (file:///home/dewain/.vscode-server/bin/ddc367ed5c8936efe395cffeec279b04ffd7db78/out/vs/workbench/api/node/extensionHostProcess.js:29:155028)
+	at qy.U (file:///home/dewain/.vscode-server/bin/ddc367ed5c8936efe395cffeec279b04ffd7db78/out/vs/workbench/api/node/extensionHostProcess.js:29:159639)
+	at s.<computed>.n.charCodeAt.s.<computed> (file:///home/dewain/.vscode-server/bin/ddc367ed5c8936efe395cffeec279b04ffd7db78/out/vs/workbench/api/node/extensionHostProcess.js:29:157133)
+	at Zb.showMessage (file:///home/dewain/.vscode-server/bin/ddc367ed5c8936efe395cffeec279b04ffd7db78/out/vs/workbench/api/node/extensionHostProcess.js:153:9037)
+	at Object.showErrorMessage (file:///home/dewain/.vscode-server/bin/ddc367ed5c8936efe395cffeec279b04ffd7db78/out/vs/workbench/api/node/extensionHostProcess.js:172:47078)
+	at /home/dewain/.vscode-server/extensions/redhat.ansible-25.2.0/out/client/src/extension.js:2:562350
+	at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+	at async kw.h (file:///home/dewain/.vscode-server/bin/ddc367ed5c8936efe395cffeec279b04ffd7db78/out/vs/workbench/api/node/extensionHostProcess.js:112:41551) ansible.lightspeed.oauth {"value":"redhat.ansible","_lower":"redhat.ansible"}
+2025-03-18 12:16:13.601 [info] Extension host with pid 4943 exiting with code 0

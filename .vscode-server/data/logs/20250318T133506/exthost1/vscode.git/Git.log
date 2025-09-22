@@ -1,0 +1,41 @@
+2025-03-18 13:35:10.238 [info] [main] Log level: Info
+2025-03-18 13:35:10.238 [info] [main] Validating found git in: "git"
+2025-03-18 13:35:10.238 [info] [main] Using git "2.43.0" from "git"
+2025-03-18 13:35:10.238 [info] [Model][doInitialScan] Initial repository scan started
+2025-03-18 13:35:10.238 [info] > git rev-parse --show-toplevel [53ms]
+2025-03-18 13:35:10.238 [info] > git rev-parse --git-dir --git-common-dir [60ms]
+2025-03-18 13:35:10.238 [info] [Model][openRepository] Opened repository: /home/dewain/Ansible-Playbooks
+2025-03-18 13:35:10.238 [info] [Model][doInitialScan] Initial repository scan completed - repositories (1), closed repositories (0), parent repositories (0), unsafe repositories (0)
+2025-03-18 13:35:10.251 [info] > git config --get commit.template [18ms]
+2025-03-18 13:35:10.288 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) refs/heads/Ansible-Playbook-Branch refs/remotes/Ansible-Playbook-Branch [30ms]
+2025-03-18 13:35:10.300 [warning] [Git][revParse] Unable to read file: ENOENT: no such file or directory, open '/home/dewain/Ansible-Playbooks/.git/refs/remotes/origin/Ansible-Playbook-Branch'
+2025-03-18 13:35:10.303 [info] > git rev-parse refs/remotes/origin/Ansible-Playbook-Branch [3ms]
+2025-03-18 13:35:10.340 [info] > git status -z -uall [29ms]
+2025-03-18 13:35:10.341 [info] > git for-each-ref --sort -committerdate --format %(refname) %(objectname) %(*objectname) [18ms]
+2025-03-18 13:35:10.413 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) refs/heads/Ansible-Playbook-Branch refs/remotes/Ansible-Playbook-Branch [15ms]
+2025-03-18 13:35:10.425 [info] > git config --get --local branch.Ansible-Playbook-Branch.vscode-merge-base [5ms]
+2025-03-18 13:35:10.436 [info] > git config --get commit.template [25ms]
+2025-03-18 13:35:10.441 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) refs/heads/origin/Ansible-Playbook-Branch refs/remotes/origin/Ansible-Playbook-Branch [7ms]
+2025-03-18 13:35:10.477 [info] > git merge-base refs/heads/Ansible-Playbook-Branch refs/remotes/origin/Ansible-Playbook-Branch [25ms]
+2025-03-18 13:35:10.678 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) refs/heads/Ansible-Playbook-Branch refs/remotes/Ansible-Playbook-Branch [214ms]
+2025-03-18 13:35:10.695 [warning] [Git][revParse] Unable to read file: ENOENT: no such file or directory, open '/home/dewain/Ansible-Playbooks/.git/refs/remotes/origin/Ansible-Playbook-Branch'
+2025-03-18 13:35:10.700 [info] > git diff --name-status -z --diff-filter=ADMR 1e113ae05fecfa49055a329671ab053d80bd2f38...refs/remotes/origin/Ansible-Playbook-Branch [220ms]
+2025-03-18 13:35:10.703 [info] > git rev-parse refs/remotes/origin/Ansible-Playbook-Branch [8ms]
+2025-03-18 13:35:10.762 [info] > git status -z -uall [53ms]
+2025-03-18 13:35:10.762 [info] > git for-each-ref --sort -committerdate --format %(refname) %(objectname) %(*objectname) [47ms]
+2025-03-18 13:35:10.841 [info] > git check-ignore -v -z --stdin [1ms]
+2025-03-18 13:35:29.802 [info] > git log --format=%H%n%aN%n%aE%n%at%n%ct%n%P%n%D%n%B -z --shortstat --diff-merges=first-parent -n50 --skip=0 --topo-order --decorate=full --stdin [41ms]
+2025-03-18 13:35:45.285 [info] > git config --get commit.template [1ms]
+2025-03-18 13:35:45.291 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) refs/heads/Ansible-Playbook-Branch refs/remotes/Ansible-Playbook-Branch [1ms]
+2025-03-18 13:35:45.295 [warning] [Git][revParse] Unable to read file: ENOENT: no such file or directory, open '/home/dewain/Ansible-Playbooks/.git/refs/remotes/origin/Ansible-Playbook-Branch'
+2025-03-18 13:35:45.296 [info] > git rev-parse refs/remotes/origin/Ansible-Playbook-Branch [1ms]
+2025-03-18 13:35:45.304 [info] > git status -z -uall [5ms]
+2025-03-18 13:35:45.305 [info] > git for-each-ref --sort -committerdate --format %(refname) %(objectname) %(*objectname) [2ms]
+2025-03-18 13:35:50.315 [info] > git config --get commit.template [3ms]
+2025-03-18 13:35:50.316 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) refs/heads/Ansible-Playbook-Branch refs/remotes/Ansible-Playbook-Branch [1ms]
+2025-03-18 13:35:50.318 [warning] [Git][revParse] Unable to read file: ENOENT: no such file or directory, open '/home/dewain/Ansible-Playbooks/.git/refs/remotes/origin/Ansible-Playbook-Branch'
+2025-03-18 13:35:50.318 [info] > git rev-parse refs/remotes/origin/Ansible-Playbook-Branch [0ms]
+2025-03-18 13:35:50.323 [info] > git status -z -uall [3ms]
+2025-03-18 13:35:50.324 [info] > git for-each-ref --sort -committerdate --format %(refname) %(objectname) %(*objectname) [1ms]
+2025-03-18 13:36:44.286 [info] > git check-ignore -v -z --stdin [1ms]
+2025-03-18 13:36:46.504 [info] > git check-ignore -v -z --stdin [2ms]

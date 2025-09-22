@@ -1,0 +1,49 @@
+2025-04-10 14:14:33.141 [info] 
+
+
+
+
+2025-04-10 14:14:33.155 [info] Extension host agent started.
+2025-04-10 14:14:33.474 [info] [127.0.0.1][0dbbd3aa][ManagementConnection] New connection established.
+2025-04-10 14:14:33.775 [info] [127.0.0.1][84f88bcf][ExtensionHostConnection] New connection established.
+2025-04-10 14:14:33.782 [info] [127.0.0.1][84f88bcf][ExtensionHostConnection] <566> Launched Extension Host Process.
+2025-04-10 14:14:37.599 [info] Getting Manifest... ms-python.debugpy
+2025-04-10 14:14:37.599 [info] Getting Manifest... ms-python.python
+2025-04-10 14:14:37.599 [info] Getting Manifest... ms-python.vscode-pylance
+2025-04-10 14:14:37.600 [info] Getting Manifest... redhat.ansible
+2025-04-10 14:14:37.910 [info] Installing extension: ms-python.debugpy {"productVersion":{"version":"1.98.2","date":"2025-03-12T13:32:45.399Z"},"pinned":false,"operation":3,"isApplicationScoped":false,"donotVerifySignature":false,"context":{"clientTargetPlatform":"win32-x64"},"profileLocation":{"$mid":1,"fsPath":"/home/dewain/.vscode-server/extensions/extensions.json","external":"file:///home/dewain/.vscode-server/extensions/extensions.json","path":"/home/dewain/.vscode-server/extensions/extensions.json","scheme":"file"}}
+2025-04-10 14:14:37.921 [info] Installing extension: ms-python.python {"productVersion":{"version":"1.98.2","date":"2025-03-12T13:32:45.399Z"},"pinned":false,"operation":3,"isApplicationScoped":false,"donotVerifySignature":false,"context":{"clientTargetPlatform":"win32-x64"},"profileLocation":{"$mid":1,"fsPath":"/home/dewain/.vscode-server/extensions/extensions.json","external":"file:///home/dewain/.vscode-server/extensions/extensions.json","path":"/home/dewain/.vscode-server/extensions/extensions.json","scheme":"file"}}
+2025-04-10 14:14:38.241 [info] Installing extension: ms-python.vscode-pylance {"productVersion":{"version":"1.98.2","date":"2025-03-12T13:32:45.399Z"},"pinned":false,"operation":3,"isApplicationScoped":false,"donotVerifySignature":false,"context":{"clientTargetPlatform":"win32-x64"},"profileLocation":{"$mid":1,"fsPath":"/home/dewain/.vscode-server/extensions/extensions.json","external":"file:///home/dewain/.vscode-server/extensions/extensions.json","path":"/home/dewain/.vscode-server/extensions/extensions.json","scheme":"file"}}
+2025-04-10 14:14:38.415 [info] Installing extension: redhat.ansible {"productVersion":{"version":"1.98.2","date":"2025-03-12T13:32:45.399Z"},"pinned":false,"operation":3,"isApplicationScoped":false,"donotVerifySignature":false,"context":{"clientTargetPlatform":"win32-x64"},"profileLocation":{"$mid":1,"fsPath":"/home/dewain/.vscode-server/extensions/extensions.json","external":"file:///home/dewain/.vscode-server/extensions/extensions.json","path":"/home/dewain/.vscode-server/extensions/extensions.json","scheme":"file"}}
+2025-04-10 14:14:38.475 [info] Getting Manifest... ms-python.vscode-pylance
+2025-04-10 14:14:38.560 [info] Getting Manifest... ms-python.debugpy
+2025-04-10 14:14:38.835 [info] Getting Manifest... ms-python.python
+2025-04-10 14:14:39.140 [info] Getting Manifest... ms-python.python
+2025-04-10 14:14:39.162 [info] Getting Manifest... ms-python.vscode-pylance
+2025-04-10 14:14:39.304 [info] Getting Manifest... ms-python.debugpy
+2025-04-10 14:14:39.461 [info] Getting Manifest... ms-python.python
+2025-04-10 14:14:40.789 [info] Getting Manifest... ms-python.vscode-pylance
+2025-04-10 14:14:40.921 [info] Getting Manifest... ms-python.debugpy
+2025-04-10 14:14:40.998 [info] Getting Manifest... redhat.vscode-yaml
+2025-04-10 14:14:42.275 [info] Extension signature verification result for ms-python.python: Success. Internal Code: 0. Executed: true. Duration: 2445ms.
+2025-04-10 14:14:43.481 [info] Extension signature verification result for ms-python.debugpy: Success. Internal Code: 0. Executed: true. Duration: 1749ms.
+2025-04-10 14:14:44.990 [info] Extension signature verification result for redhat.ansible: Success. Internal Code: 0. Executed: true. Duration: 1933ms.
+2025-04-10 14:14:45.727 [info] Extracted extension to file:///home/dewain/.vscode-server/extensions/ms-python.debugpy-2025.6.0-linux-x64: ms-python.debugpy
+2025-04-10 14:14:45.774 [info] Renamed to /home/dewain/.vscode-server/extensions/ms-python.debugpy-2025.6.0-linux-x64
+2025-04-10 14:14:45.818 [info] Marked extension as removed ms-python.debugpy-2025.4.1
+2025-04-10 14:14:45.821 [info] Extension installed successfully: ms-python.debugpy file:///home/dewain/.vscode-server/extensions/extensions.json
+2025-04-10 14:14:46.898 [info] Extracted extension to file:///home/dewain/.vscode-server/extensions/redhat.ansible-25.3.1: redhat.ansible
+2025-04-10 14:14:46.930 [info] Renamed to /home/dewain/.vscode-server/extensions/redhat.ansible-25.3.1
+2025-04-10 14:14:46.978 [info] Marked extension as removed redhat.ansible-25.2.0
+2025-04-10 14:14:46.980 [info] Extension installed successfully: redhat.ansible file:///home/dewain/.vscode-server/extensions/extensions.json
+2025-04-10 14:14:48.037 [info] Extension signature verification result for ms-python.vscode-pylance: Success. Internal Code: 0. Executed: true. Duration: 1690ms.
+2025-04-10 14:14:48.953 [info] Extracted extension to file:///home/dewain/.vscode-server/extensions/ms-python.python-2025.4.0-linux-x64: ms-python.python
+2025-04-10 14:14:49.218 [info] Renamed to /home/dewain/.vscode-server/extensions/ms-python.python-2025.4.0-linux-x64
+2025-04-10 14:14:49.252 [info] Extension installed successfully: ms-python.python file:///home/dewain/.vscode-server/extensions/extensions.json
+2025-04-10 14:14:49.257 [info] Marked extension as removed ms-python.python-2025.2.0
+2025-04-10 14:14:58.528 [info] Extracted extension to file:///home/dewain/.vscode-server/extensions/ms-python.vscode-pylance-2025.4.1: ms-python.vscode-pylance
+2025-04-10 14:14:59.244 [info] Renamed to /home/dewain/.vscode-server/extensions/ms-python.vscode-pylance-2025.4.1
+2025-04-10 14:14:59.280 [info] Marked extension as removed ms-python.vscode-pylance-2025.3.2
+2025-04-10 14:14:59.281 [info] Extension installed successfully: ms-python.vscode-pylance file:///home/dewain/.vscode-server/extensions/extensions.json
+2025-04-10 14:16:22.345 [info] [127.0.0.1][0dbbd3aa][ManagementConnection] The client has disconnected gracefully, so the connection will be disposed.
+2025-04-10 14:16:22.378 [info] [127.0.0.1][84f88bcf][ExtensionHostConnection] <566> Extension Host Process exited with code: 0, signal: null.

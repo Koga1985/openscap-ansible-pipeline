@@ -1,0 +1,36 @@
+2025-03-18 13:35:08.564 [info] Experiment 'pythonRecommendTensorboardExt' is active
+2025-03-18 13:35:08.564 [info] Experiment 'pythonTerminalEnvVarActivation' is active
+2025-03-18 13:35:08.564 [info] Experiment 'pythonTestAdapter' is active
+2025-03-18 13:35:08.564 [warning] Dir "/home/dewain/Ansible-Playbooks/.pixi/envs" is not watchable (directory does not exist)
+2025-03-18 13:35:08.985 [info] Python interpreter path: /bin/python3
+2025-03-18 13:35:09.405 [info] > pyenv which python
+2025-03-18 13:35:09.405 [info] cwd: .
+2025-03-18 13:35:11.612 [info] Starting Pylance language server.
+2025-03-18 13:35:39.558 [info] Starting Environment refresh
+2025-03-18 13:35:39.558 [info] Searching for interpreters in posix paths locator
+2025-03-18 13:35:39.560 [info] Searching for pyenv environments
+2025-03-18 13:35:39.560 [info] Searching for conda environments
+2025-03-18 13:35:39.561 [info] Searching for global virtual environments
+2025-03-18 13:35:39.561 [info] Searching for custom virtual environments
+2025-03-18 13:35:39.606 [info] > conda info --json
+2025-03-18 13:35:39.737 [info] > hatch env show --json
+2025-03-18 13:35:39.737 [info] cwd: .
+2025-03-18 13:35:39.741 [info] pyenv is not installed
+2025-03-18 13:35:39.741 [info] Finished searching for pyenv environments: 182 milliseconds
+2025-03-18 13:35:39.744 [info] Finished searching for custom virtual envs: 184 milliseconds
+2025-03-18 13:35:39.747 [info] Finished searching for global virtual envs: 187 milliseconds
+2025-03-18 13:35:39.757 [info] Found: /bin/python3 --> /bin/python3.12
+2025-03-18 13:35:39.758 [info] Found: /bin/python3.12 --> /bin/python3.12
+2025-03-18 13:35:39.782 [info] Found: /usr/bin/python3 --> /usr/bin/python3.12
+2025-03-18 13:35:39.782 [info] Found: /usr/bin/python3.12 --> /usr/bin/python3.12
+2025-03-18 13:35:39.804 [info] > /bin/python3 -I ~/.vscode-server/extensions/ms-python.python-2025.2.0-linux-x64/python_files/get_output_via_markers.py ~/.vscode-server/extensions/ms-python.python-2025.2.0-linux-x64/python_files/interpreterInfo.py
+2025-03-18 13:35:39.977 [info] Finished searching for interpreters in posix paths locator: 421 milliseconds
+2025-03-18 13:35:40.002 [info] > /usr/bin/python3 -I ~/.vscode-server/extensions/ms-python.python-2025.2.0-linux-x64/python_files/get_output_via_markers.py ~/.vscode-server/extensions/ms-python.python-2025.2.0-linux-x64/python_files/interpreterInfo.py
+2025-03-18 13:35:40.002 [info] Environments refresh paths discovered (event): 446 milliseconds
+2025-03-18 13:35:40.002 [info] Environments refresh paths discovered: 446 milliseconds
+2025-03-18 13:35:40.036 [info] Environments refresh finished (event): 480 milliseconds
+2025-03-18 13:35:40.039 [info] Environment refresh took 484 milliseconds
+2025-03-18 13:35:43.909 [info] Active interpreter [/home/dewain/Ansible-Playbooks]:  /bin/python3
+2025-03-18 13:35:43.911 [info] Discover tests for workspace name: Ansible-Playbooks - uri: /home/dewain/Ansible-Playbooks
+2025-03-18 13:35:44.453 [info] Discover tests for workspace name: Ansible-Playbooks - uri: /home/dewain/Ansible-Playbooks/.vscode/settings.json
+2025-03-18 13:35:46.912 [info] Discover tests for workspace name: Ansible-Playbooks - uri: /home/dewain/Ansible-Playbooks/.vscode/settings.json

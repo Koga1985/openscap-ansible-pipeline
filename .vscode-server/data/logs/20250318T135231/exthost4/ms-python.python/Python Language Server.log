@@ -1,0 +1,14 @@
+2025-03-18 13:58:07.132 [info] (Client) Pylance async client (2025.3.2) started with python extension (2025.2.0)
+2025-03-18 13:58:07.629 [info] [Info  - 1:58:07 PM] (1895) Server root directory: file:///home/dewain/.vscode-server/extensions/ms-python.vscode-pylance-2025.3.2/dist
+2025-03-18 13:58:07.629 [info] [Info  - 1:58:07 PM] (1895) Pylance language server 2025.3.2 (pyright version 1.1.396, commit 3e2236a7) starting
+2025-03-18 13:58:07.646 [info] [Info  - 1:58:07 PM] (1895) Starting service instance "playbooks"
+2025-03-18 13:58:07.769 [info] [Info  - 1:58:07 PM] (1895) Setting environmentName for service "playbooks": "3.12.3 (global)"
+2025-03-18 13:58:07.769 [info] [Info  - 1:58:07 PM] (1895) Setting pythonPath for service "playbooks": "/bin/python3"
+2025-03-18 13:58:07.770 [info] [Info  - 1:58:07 PM] (1895) No include entries specified; assuming /etc/ansible/playbooks
+2025-03-18 13:58:07.770 [info] [Info  - 1:58:07 PM] (1895) Auto-excluding **/node_modules
+2025-03-18 13:58:07.770 [info] [Info  - 1:58:07 PM] (1895) Auto-excluding **/__pycache__
+2025-03-18 13:58:07.771 [info] [Info  - 1:58:07 PM] (1895) Auto-excluding **/.*
+2025-03-18 13:58:07.797 [info] [Info  - 1:58:07 PM] (1895) Assuming Python version 3.12.3.final.0
+2025-03-18 13:58:07.941 [info] [Info  - 1:58:07 PM] (1895) No source files found.
+2025-03-18 13:58:08.283 [info] [Info  - 1:58:08 PM] (1895) Priority queue background worker(2) root directory: file:///home/dewain/.vscode-server/extensions/ms-python.vscode-pylance-2025.3.2/dist
+2025-03-18 13:58:08.284 [info] [Info  - 1:58:08 PM] (1895) Priority queue background worker(2) started

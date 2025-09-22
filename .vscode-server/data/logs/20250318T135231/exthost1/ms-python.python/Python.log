@@ -1,0 +1,8 @@
+2025-03-18 13:52:33.373 [info] Experiment 'pythonRecommendTensorboardExt' is active
+2025-03-18 13:52:33.373 [info] Experiment 'pythonTerminalEnvVarActivation' is active
+2025-03-18 13:52:33.373 [info] Experiment 'pythonTestAdapter' is active
+2025-03-18 13:52:33.373 [warning] Dir "/home/dewain/Ansible-Playbooks/.pixi/envs" is not watchable (directory does not exist)
+2025-03-18 13:52:33.373 [info] Python interpreter path: /bin/python3
+2025-03-18 13:52:33.386 [info] > pyenv which python
+2025-03-18 13:52:33.386 [info] cwd: .
+2025-03-18 13:52:34.887 [info] Starting Pylance language server.

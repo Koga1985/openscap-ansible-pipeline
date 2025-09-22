@@ -1,0 +1,30 @@
+2025-03-18 13:35:11.204 [info] (Client) Pylance async client (2025.3.2) started with python extension (2025.2.0)
+2025-03-18 13:35:11.594 [info] [Info  - 1:35:11 PM] (579) Server root directory: file:///home/dewain/.vscode-server/extensions/ms-python.vscode-pylance-2025.3.2/dist
+2025-03-18 13:35:11.594 [info] [Info  - 1:35:11 PM] (579) Pylance language server 2025.3.2 (pyright version 1.1.396, commit 3e2236a7) starting
+2025-03-18 13:35:11.601 [info] [Info  - 1:35:11 PM] (579) Starting service instance "Ansible-Playbooks"
+2025-03-18 13:35:11.644 [info] [Info  - 1:35:11 PM] (579) Setting environmentName for service "Ansible-Playbooks": "3.12.3 (global)"
+2025-03-18 13:35:11.644 [info] [Info  - 1:35:11 PM] (579) Setting pythonPath for service "Ansible-Playbooks": "/bin/python3"
+2025-03-18 13:35:11.644 [info] [Info  - 1:35:11 PM] (579) No include entries specified; assuming /home/dewain/Ansible-Playbooks
+2025-03-18 13:35:11.645 [info] [Info  - 1:35:11 PM] (579) Auto-excluding **/node_modules
+2025-03-18 13:35:11.645 [info] [Info  - 1:35:11 PM] (579) Auto-excluding **/__pycache__
+2025-03-18 13:35:11.645 [info] [Info  - 1:35:11 PM] (579) Auto-excluding **/.*
+2025-03-18 13:35:11.667 [info] [Info  - 1:35:11 PM] (579) Assuming Python version 3.12.3.final.0
+2025-03-18 13:35:11.790 [info] [Info  - 1:35:11 PM] (579) No source files found.
+2025-03-18 13:35:12.053 [info] [Info  - 1:35:12 PM] (579) Priority queue background worker(2) root directory: file:///home/dewain/.vscode-server/extensions/ms-python.vscode-pylance-2025.3.2/dist
+2025-03-18 13:35:12.054 [info] [Info  - 1:35:12 PM] (579) Priority queue background worker(2) started
+2025-03-18 13:35:29.821 [info] [Info  - 1:35:29 PM] (579) Setting environmentName for service "Ansible-Playbooks": "3.12.3 (global)"
+2025-03-18 13:35:29.821 [info] [Info  - 1:35:29 PM] (579) Setting pythonPath for service "Ansible-Playbooks": "/bin/python3"
+2025-03-18 13:35:29.821 [info] [Info  - 1:35:29 PM] (579) No include entries specified; assuming /home/dewain/Ansible-Playbooks
+2025-03-18 13:35:29.821 [info] [Info  - 1:35:29 PM] (579) Auto-excluding **/node_modules
+2025-03-18 13:35:29.821 [info] [Info  - 1:35:29 PM] (579) Auto-excluding **/__pycache__
+2025-03-18 13:35:29.821 [info] [Info  - 1:35:29 PM] (579) Auto-excluding **/.*
+2025-03-18 13:35:29.846 [info] [Info  - 1:35:29 PM] (579) Assuming Python version 3.12.3.final.0
+2025-03-18 13:35:29.912 [info] [Info  - 1:35:29 PM] (579) No source files found.
+2025-03-18 13:35:43.944 [info] [Info  - 1:35:43 PM] (579) Setting environmentName for service "Ansible-Playbooks": "3.12.3 (global)"
+2025-03-18 13:35:43.945 [info] [Info  - 1:35:43 PM] (579) Setting pythonPath for service "Ansible-Playbooks": "/bin/python3"
+2025-03-18 13:35:43.946 [info] [Info  - 1:35:43 PM] (579) No include entries specified; assuming /home/dewain/Ansible-Playbooks
+2025-03-18 13:35:43.948 [info] [Info  - 1:35:43 PM] (579) Auto-excluding **/node_modules
+2025-03-18 13:35:43.949 [info] [Info  - 1:35:43 PM] (579) Auto-excluding **/__pycache__
+2025-03-18 13:35:43.952 [info] [Info  - 1:35:43 PM] (579) Auto-excluding **/.*
+2025-03-18 13:35:43.975 [info] [Info  - 1:35:43 PM] (579) Assuming Python version 3.12.3.final.0
+2025-03-18 13:35:44.113 [info] [Info  - 1:35:44 PM] (579) No source files found.

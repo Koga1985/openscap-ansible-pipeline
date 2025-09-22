@@ -1,0 +1,6 @@
+2025-03-18 11:55:35.124 [info] Experiment 'pythonRecommendTensorboardExt' is active
+2025-03-18 11:55:35.125 [info] Experiment 'pythonTerminalEnvVarActivation' is active
+2025-03-18 11:55:35.125 [info] Experiment 'pythonTestAdapter' is active
+2025-03-18 11:55:35.199 [info] > /bin/python3 -I ~/.vscode-server/extensions/ms-python.python-2025.2.0-linux-x64/python_files/get_output_via_markers.py ~/.vscode-server/extensions/ms-python.python-2025.2.0-linux-x64/python_files/interpreterInfo.py
+2025-03-18 11:55:35.292 [info] Python interpreter path: /bin/python3
+2025-03-18 11:55:37.035 [info] Starting Pylance language server.

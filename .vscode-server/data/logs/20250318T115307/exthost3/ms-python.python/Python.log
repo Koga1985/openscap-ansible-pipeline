@@ -1,0 +1,20 @@
+2025-03-18 12:16:30.926 [info] Experiment 'pythonRecommendTensorboardExt' is active
+2025-03-18 12:16:30.926 [info] Experiment 'pythonTerminalEnvVarActivation' is active
+2025-03-18 12:16:30.926 [info] Experiment 'pythonTestAdapter' is active
+2025-03-18 12:16:30.926 [warning] Dir "/home/dewain/Ansible-Playbooks/.pixi/envs" is not watchable (directory does not exist)
+2025-03-18 12:16:30.948 [info] Starting Environment refresh
+2025-03-18 12:16:30.949 [info] Starting Environment refresh
+2025-03-18 12:16:31.092 [info] > hatch env show --json
+2025-03-18 12:16:31.092 [info] cwd: .
+2025-03-18 12:16:31.170 [info] > /bin/python3 -I ~/.vscode-server/extensions/ms-python.python-2025.2.0-linux-x64/python_files/get_output_via_markers.py ~/.vscode-server/extensions/ms-python.python-2025.2.0-linux-x64/python_files/interpreterInfo.py
+2025-03-18 12:16:31.188 [info] Environments refresh paths discovered: 240 milliseconds
+2025-03-18 12:16:31.188 [info] Environments refresh paths discovered: 239 milliseconds
+2025-03-18 12:16:31.208 [info] Environments refresh finished (event): 258 milliseconds
+2025-03-18 12:16:31.208 [info] Environments refresh finished (event): 260 milliseconds
+2025-03-18 12:16:31.209 [info] Python interpreter path: /bin/python3
+2025-03-18 12:16:31.211 [info] Environment refresh took 262 milliseconds
+2025-03-18 12:16:31.212 [info] Environment refresh took 265 milliseconds
+2025-03-18 12:16:31.217 [info] > pyenv which python
+2025-03-18 12:16:31.217 [info] cwd: .
+2025-03-18 12:16:32.777 [info] Starting Pylance language server.
+2025-03-18 12:17:47.511 [info] Discover tests for workspace name: Ansible-Playbooks - uri: /home/dewain/Ansible-Playbooks
