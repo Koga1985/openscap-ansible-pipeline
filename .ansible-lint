@@ -1,6 +1,8 @@
+---
 skip_list:
   - yaml[line-length]
+
 warn_list:
   - experimental
-profiles:
-  production: true
+
+profile: production
