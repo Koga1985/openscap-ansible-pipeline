@@ -5,9 +5,4 @@ skip_list:
 warn_list:
   - experimental
 
-<<<<<<< HEAD
 profile: production
-=======
-profile: production
-
->>>>>>> 4b7393fb5b0a50f58ee20f16d04c799f65917e42
