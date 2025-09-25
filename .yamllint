@@ -1,6 +1,17 @@
-extends: default
-rules:
-  line-length:
-    max: 140
-    level: warning
-  truthy: disable
+*** a/.yamllint
+--- b/.yamllint
+@@
++---
++rules:
++  comments:
++    min-spaces-from-content: 1
++  comments-indentation: disable
++  braces:
++    max-spaces-inside: 1
++  octal-values:
++    forbid-implicit-octal: true
++    forbid-explicit-octal: true
++  line-length:
++    max: 140
++    allow-non-breakable-words: true
++    allow-non-breakable-inline-mappings: true
