@@ -1,6 +1,6 @@
 ---
 skip_list:
-  - yaml[line-length]
+  - yamllint[line-length]
 
 warn_list:
   - experimental
